@@ -1,0 +1,194 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --bin-blue: #3b82f6; /* blue-500 */
+  --bin-green: #22c55e; /* green-500 */
+  --bin-black: #374151; /* gray-700 */
+}
+
+body {
+  /* Soft radial gradient background */
+  background: radial-gradient(1200px 600px at 20% -10%, #eef3ff 0%, #f7fbff 40%, #f8fdfa 100%);
+  @apply text-gray-900 transition-colors;
+}
+
+/* (removed temporary header override) */
+
+.card {
+  @apply rounded-2xl bg-white shadow-lg ring-1 ring-black/5;
+}
+
+.pill {
+  @apply inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm shadow-sm ring-1 ring-black/5 bg-white;
+}
+
+/* Dark mode */
+.dark body {
+  /* Bindicator after sunset: deep navy gradient */
+  background: linear-gradient(to bottom, #0f172a, #1e293b, #0f172a);
+  @apply text-gray-100 transition-colors;
+}
+
+.dark {
+  --bin-blue: #60a5fa;  /* blue-400 */
+  --bin-green: #4ade80; /* green-400 */
+  --bin-black: #9ca3af; /* gray-400 */
+}
+.dark .card {
+  @apply bg-gray-900/70 ring-white/10 shadow;
+}
+.dark .pill {
+  @apply bg-gray-800/80 ring-white/10 text-gray-100;
+}
+
+/* Elevated search bar tint */
+.search-bar {
+  @apply rounded-2xl bg-white/70 ring-1 ring-black/5 shadow-lg backdrop-blur;
+}
+.dark .search-bar {
+  @apply bg-gray-900/60 ring-white/10 shadow;
+}
+
+/* Big bin figure styles */
+.bin-plate {
+  @apply grid place-items-center rounded-full bg-white shadow-lg ring-1 ring-black/5;
+}
+.dark .bin-plate {
+  @apply bg-gray-800 ring-white/10 shadow;
+}
+
+/* Real bin image styling */
+.bin-img {
+  @apply drop-shadow-md;
+  transition: transform 220ms ease, filter 220ms ease;
+}
+.dark .bin-img {
+  /* Slight outline in dark mode to keep edges crisp */
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.6)) drop-shadow(0 0 0.75px rgba(255,255,255,0.25));
+}
+
+@keyframes wiggle {
+  0% { transform: rotate(0deg) translateY(0); }
+  20% { transform: rotate(-2deg) translateY(-1px); }
+  40% { transform: rotate(2deg) translateY(0); }
+  60% { transform: rotate(-1.5deg) translateY(-1px); }
+  80% { transform: rotate(1.5deg) translateY(0); }
+  100% { transform: rotate(0deg) translateY(0); }
+}
+.bin-plate:hover .bin-img {
+  animation: wiggle 600ms ease-in-out both;
+}
+
+/* Loading dots */
+@keyframes dot-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.6; }
+  40% { transform: translateY(-4px); opacity: 1; }
+}
+.loading-dots span {
+  animation: dot-bounce 1.2s infinite ease-in-out;
+  display: inline-block;
+}
+.loading-dots span:nth-child(2) { animation-delay: .2s }
+.loading-dots span:nth-child(3) { animation-delay: .4s }
+
+/* Slight dim + contrast lift for realistic bins in dark mode */
+@media (prefers-color-scheme: dark) {
+  img[alt*="bin" i] {
+    filter: brightness(0.85) contrast(1.05);
+  }
+}
+
+/* Defensive cleanup: hide any truly empty inline artifacts inside app root */
+.app-root button:empty,
+.app-root span:empty {
+  display: none !important;
+}
+
+.date-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bin-card {
+  transition: box-shadow 200ms ease, border-color 200ms ease, transform 200ms ease;
+}
+
+.bins-row {
+  display: flex;
+  flex-direction: row !important;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 480px) {
+  .bin-image {
+    max-width: 65px !important;
+  }
+  .bin-card {
+    padding: 6px;
+  }
+  .bin-label {
+    font-size: 0.8rem;
+  }
+  h1 {
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+  .bins-row {
+    gap: 12px;
+  }
+}
+
+@media (min-width: 700px) {
+  /* COMPRESS WEEK CARDS AND GAPS */
+  .week-card {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    border-radius: 14px !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .weeks-container {
+    row-gap: 4px !important;
+    margin-top: 4px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .weeks-container > .week-card + .week-card {
+    margin-top: 4px !important;
+  }
+
+  /* tighten date → bins gap */
+  .date-header,
+  .date-main {
+    margin-bottom: 2px !important;
+    padding-bottom: 0 !important;
+  }
+
+  .bins-row {
+    margin-top: 4px !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* tighten bin label spacing, keep bin size */
+  .bin-label {
+    margin-top: 1px !important;
+    font-size: 0.85rem !important;
+  }
+}
